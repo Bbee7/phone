@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手机号码查询</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        input[type="text"], button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .result {
+            border: 1px solid #ccc;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>手机号码查询</h1>
+    <input type="text" id="phoneInput" placeholder="请输入11位手机号码">
+    <button onclick="fetchPhoneInfo()">查询</button>
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+async function fetchPhoneInfo() {
+    const phone = document.getElementById('phoneInput').value;
+    if (!phone || phone.length !== 11) {
+        alert("请输入有效的11位手机号码");
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:5000/api/phone?phone=${phone}`);
+        const data = await response.json();
+        if (response.ok) {
+            document.getElementById('result').innerHTML = `<p>运营商: ${data.pro}</p><p>省份: ${data.province}</p>`;
+        } else {
+            document.getElementById('result').innerHTML = `<p>${data.error}</p>`;
+        }
+    } catch (error) {
+        console.error('请求失败:', error);
+        document.getElementById('result').innerHTML = '<p>请求失败，请稍后再试。</p>';
+    }
+}
+</script>
+</body>
+</html>
