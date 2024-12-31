@@ -1,0 +1,3 @@
+[submodule "phone-query"]
+	path = phone-query
+	url = https://github.com/username/phone-query.git
